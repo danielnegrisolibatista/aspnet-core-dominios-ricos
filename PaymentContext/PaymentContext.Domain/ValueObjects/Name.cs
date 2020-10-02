@@ -1,10 +1,11 @@
-﻿using System;
+﻿using PaymentContext.Shared.ValueObjects;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace PaymentContext.Domain.ValueObjects
 {
-    public class Name
+    public class Name : ValueObject
     {
         public Name(string firstName, string lastName)
         {
