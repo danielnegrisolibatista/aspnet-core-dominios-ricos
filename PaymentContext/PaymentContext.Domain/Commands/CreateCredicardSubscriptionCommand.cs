@@ -1,12 +1,15 @@
-﻿using PaymentContext.Domain.Enums;
+﻿using Flunt.Notifications;
+using Flunt.Validations;
+using PaymentContext.Domain.Enums;
 using PaymentContext.Domain.ValueObjects;
+using PaymentContext.Shared.Commands;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace PaymentContext.Domain.Commands
 {
-    public class CreateCredicardSubscriptionCommand
+    public class CreateCredicardSubscriptionCommand : Notifiable, ICommand
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -24,7 +27,7 @@ namespace PaymentContext.Domain.Commands
         public decimal TotalPaid { get; set; }
         public string Payer { get; set; }
         public string PayerEmail { get; set; }
-        public Document PayerDocument { get; set; }
+        public string PayerDocument { get; set; }
         public EDocumentType PayerDocumentType { get; set; }
 
         public string Street { get; set; }
@@ -34,5 +37,15 @@ namespace PaymentContext.Domain.Commands
         public string State { get; set; }
         public string Contry { get; set; }
         public string ZipCode { get; set; }
+
+        public void Validate()
+        {
+            AddNotifications(new Contract()
+                .Requires()
+                .HasMinLen(FirstName, 3, "Name.FirstName", "Nome de conter pelo menos 3 caracteres")
+                .HasMinLen(LastName, 3, "Name.LastName", "Nome de conter pelo menos 3 caracteres")
+                .HasMaxLen(FirstName, 40, "Name.FirstName", "Nome de conter no máximo 40 caracteres")
+            );
+        }
     }
 }
